@@ -46,8 +46,14 @@ public class UserController {
 
     // it will create user
     @PostMapping("/")
-    public User createUser(@RequestBody User user){
-        return userRepo.save(user);
+    public ResponseEntity<?> createUser(@RequestBody User user){
+        User check = userRepo.findByEmail(user.getEmail());
+        if(check == null){
+            userRepo.save(user);
+            return ResponseEntity.ok(user);
+        } else{
+            return ResponseEntity.badRequest().body("User already exist with this email");
+        }
     }
 
     // user login
@@ -63,7 +69,7 @@ public class UserController {
     // find user by email
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
-        User user = userRepo.findByEmail(email).orElse(null);
+        User user = userRepo.findByEmail(email);
         if (user == null){
             return ResponseEntity.notFound().build();
         }

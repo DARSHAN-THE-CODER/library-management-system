@@ -43,4 +43,25 @@ public class Book {
     public Book orElse(Object object) {
         return null;
     }
+
+    public Object getPublicationDate() {
+        return null;
+    }
+
+    public Object getPublisher() {
+        return null;
+    }
+
+    public void setPublicationDate(Object publicationDate) {
+    }
+
+    public void setPublisher(Object publisher) {
+    }
+
+    public Object getGenre() {
+        return null;
+    }
+
+    public void setGenre(Object genre) {
+    }
 }
