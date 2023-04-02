@@ -30,7 +30,11 @@ public class UserController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
     private BookRepo bookRepo;
+
+    @Autowired
     private BorrowingsRepo borrowingsRepo;
     // @GetMapping(path = "/getAll")
     // public List<User> getAll(){

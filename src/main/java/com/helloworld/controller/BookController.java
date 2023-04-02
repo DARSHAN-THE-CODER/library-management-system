@@ -26,12 +26,26 @@ public class BookController {
 
     @Autowired
     private BookRepo bookRepo;
+
+    @Autowired
     private UserRepo userRepo;
 
     @GetMapping("/")
     public ResponseEntity<List<Book>> getALlBooks(){
         List<Book> books = bookRepo.findAll();
         return ResponseEntity.ok(books);
+    }
+
+    // to create book
+    @PostMapping("/")
+    public ResponseEntity<?> createBook(@RequestBody Book book){
+        Book check = bookRepo.findByIsbn(book.getIsbn());
+        if(check == null){
+            bookRepo.save(book);
+            return ResponseEntity.ok(book);
+        } else{
+            return ResponseEntity.badRequest().body("Book already exist with this isbn");
+        }
     }
 
     // get boko details using book id

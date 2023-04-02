@@ -32,4 +32,8 @@ public class Administrator {
 
     @NonNull
     private String password;
+
+    public Administrator orElse(Object object) {
+        return null;
+    }
 }
