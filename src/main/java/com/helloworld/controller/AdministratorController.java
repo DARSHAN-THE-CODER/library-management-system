@@ -45,7 +45,7 @@ public class AdministratorController {
     // to add new admin (it will be done by postman only)
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody Administrator admin){
-        Administrator existingAdmin = adminRepo.findByEmail(admin.getEmail()).orElse(null);
+        Administrator existingAdmin = adminRepo.findByEmail(admin.getEmail());
         if(existingAdmin == null){
             adminRepo.save(admin);
             return ResponseEntity.ok(admin);
@@ -57,7 +57,7 @@ public class AdministratorController {
     // to login admin
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Administrator admin){
-        Administrator existingAdmin = adminRepo.findByEmail(admin.getEmail()).orElse(null);
+        Administrator existingAdmin = adminRepo.findByEmail(admin.getEmail());
         if(existingAdmin != null){
             if(existingAdmin.getPassword().equals(admin.getPassword())){
                 return ResponseEntity.ok(existingAdmin);

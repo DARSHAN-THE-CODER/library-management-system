@@ -7,7 +7,9 @@ const inter = Inter({ subsets: ['latin'] })
 import Navbar from '@/components/common/Navbar'
 import Footer from '@/components/common/Footer'
 
-export default function Home() {
+
+export default function Home({loggedIn, setIsloggedIn}) {
+  // console.log(test)
   return (
     <>
       <Head>
