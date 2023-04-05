@@ -4,7 +4,7 @@ import { toast} from "react-toastify"
 
 import { useRouter } from 'next/router'
 
-const Navbar = ({loggedIn , setIsloggedIn}) => {
+const Navbar = ({loggedIn , setIsloggedIn, routes, setRoutes}) => {
 
   const router = useRouter();
 
@@ -12,6 +12,7 @@ const Navbar = ({loggedIn , setIsloggedIn}) => {
     localStorage.removeItem('lmsuser')
     toast.success("Logged out successfully")
     setIsloggedIn(false);
+    setRoutes([])
     router.push('/')
   }
 
@@ -31,7 +32,14 @@ const Navbar = ({loggedIn , setIsloggedIn}) => {
           <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Librarian Login</p>
         </Link>
       </div>) : (
-        <div className="flex">
+        <div className="flex flex-wrap">
+          {
+            routes.map((route, index) => (
+              <Link href={route.path} key={index}>
+                <p className=" hover:bg-white mt-2 md:mt-0 hover:text-blue-700 text-white font-semibold py-2 px-4 border rounded shadow mr-2">{route.name}</p>
+              </Link>
+            ))
+          }
           <button onClick={handleLogout}>
             <p className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mr-2">Logout</p>
           </button>

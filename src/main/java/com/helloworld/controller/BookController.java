@@ -37,7 +37,7 @@ public class BookController {
     }
 
     // to create book
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<?> createBook(@RequestBody Book book){
         Book check = bookRepo.findByIsbn(book.getIsbn());
         if(check == null){

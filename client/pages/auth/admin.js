@@ -8,13 +8,32 @@ import { toast } from "react-toastify"
 
 import { useRouter } from "next/router"
 
-function Admin({loggedIn, setIsloggedIn}) {
+function Admin({ loggedIn, setIsloggedIn, setRoutes }) {
     // console.log(test)
     const router = useRouter();
     const [user, setUser] = useState({
         email: '',
         password: '',
     })
+
+    const adminRoutes = [
+        {
+            name: "Dashboard",
+            path: "/dashboard",
+        },
+        {
+            name: "All Books",
+            path: "/data/books",
+        },
+        {
+            name: "All Students",
+            path: "/data/student",
+        },
+        {
+            name: "All Librarians",
+            path: "/data/librarian",
+        },
+    ]
 
     function handleReset() {
         setUser({
@@ -29,9 +48,11 @@ function Admin({loggedIn, setIsloggedIn}) {
         axios.post(`${APIURL}/admin/login`, user)
             .then(res => {
                 localStorage.setItem('lmsuser', "admin")
+                localStorage.setItem('lmsuserid', res.data.id)
                 console.log(res.data)
                 toast.success("Login Successful")
                 setIsloggedIn(true)
+                setRoutes(adminRoutes)
                 router.push(`/dashboard/admin/${res.data.id}`)
             }
             )

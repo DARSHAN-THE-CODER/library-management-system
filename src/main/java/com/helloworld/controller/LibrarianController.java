@@ -48,10 +48,12 @@ public class LibrarianController {
 
     // librarian login 
     @PostMapping("/login")
-    public ResponseEntity<Librarian> login(@RequestBody Librarian librarian) {
+    public ResponseEntity<?> login(@RequestBody Librarian librarian) {
         Librarian existingLibrarian = librarianRepo.findByEmail(librarian.getEmail());
-        if (existingLibrarian == null || !existingLibrarian.getPassword().equals(librarian.getPassword())) {
-            return ResponseEntity.notFound().build();
+        if (existingLibrarian == null ) {
+            return ResponseEntity.badRequest().body("Librarian not found");
+        } else if (!existingLibrarian.getPassword().equals(librarian.getPassword())) {
+            return ResponseEntity.badRequest().body("Incorrect password");
         }
         return ResponseEntity.ok(existingLibrarian);
     }

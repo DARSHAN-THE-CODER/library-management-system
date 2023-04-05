@@ -49,7 +49,7 @@ public class UserController {
 
 
     // it will create user
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user){
         User check = userRepo.findByEmail(user.getEmail());
         if(check == null){
