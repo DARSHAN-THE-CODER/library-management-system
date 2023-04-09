@@ -77,13 +77,13 @@ public class BookController {
     }
 
     // To get all students who borrowed a book based on the book ID,
-    @GetMapping("/{bookId}/borrowers")
-    public ResponseEntity<List<User>> getBookBorrowers(@PathVariable Long bookId){
-        Book book = bookRepo.findById(bookId).orElse(null);
-        if ( book == null){
-            return ResponseEntity.notFound().build();
-        }
-        List<User> borrowers = userRepo.findByBooksContaining(book);
-        return ResponseEntity.ok(borrowers);
-    }
+    // @GetMapping("/{bookId}/borrowers")
+    // public ResponseEntity<List<User>> getBookBorrowers(@PathVariable Long bookId){
+    //     Book book = bookRepo.findById(bookId).orElse(null);
+    //     if ( book == null){
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     List<User> borrowers = userRepo.findByBooksContaining(book);
+    //     return ResponseEntity.ok(borrowers);
+    // }
 }

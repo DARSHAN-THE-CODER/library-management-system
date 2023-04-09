@@ -19,21 +19,45 @@ public class Borrowings {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NonNull
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @NonNull
     @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @NonNull
     private LocalDateTime borrowDate;
 
+    private LocalDateTime dueDate;
+
     private LocalDateTime returnDate;
 
     private BigDecimal fineAmount;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public void setBook(Book book) {
+        this.book = book;
+    }
+    
+    public void setIssuedBy(Librarian librarian) {
+    }
+
+    public void setIssuedAt(LocalDateTime now) {
+    }
+
+    public void setUserId(Long id2) {
+    }
+
+    public void setBookId(Long id2) {
+    }
 }

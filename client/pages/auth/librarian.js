@@ -6,7 +6,7 @@ import {APIURL} from '@/constants/api'
 import {toast} from 'react-toastify'
 import {useRouter} from 'next/router'
 
-function Librarian() {
+function Librarian({setRoutes, setIsloggedIn}) {
     const router = useRouter()
     const [user, setUser] = useState({
         email: '',
@@ -20,6 +20,17 @@ function Librarian() {
         })
     }
 
+    const routes = [
+        {
+            name: "Dashboard",
+            path: "/dashboard",
+        },
+        {
+            name: "All Students",
+            path: "/data/student",
+        },
+    ]
+
     function handleSubmit(e) {
         e.preventDefault()
         console.log(user)
@@ -29,6 +40,8 @@ function Librarian() {
                 toast.success('Login Successful')
                 localStorage.setItem('lmsuser', 'librarian')
                 localStorage.setItem('lmsuserid', res.data.id)
+                setRoutes(routes)
+                setIsloggedIn(true)
                 router.push(`/dashboard/librarian/${res.data.id}`)
             }
             )

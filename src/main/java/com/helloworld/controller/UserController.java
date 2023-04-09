@@ -114,6 +114,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id){
+        User user = userRepo.findById(id).orElse(null);
+        System.out.println(user);
+        List<User> all = userRepo.findAll();
+        System.out.println(all);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        userRepo.delete(user);
+        return ResponseEntity.ok(user);
+    }
+
     // while returnnig book
     @DeleteMapping("/{userId}/borrow/{bookId}")
     public ResponseEntity<User> returnBook(@PathVariable Long userId, @PathVariable Long bookId){
@@ -123,8 +136,10 @@ public class UserController {
         if(  user == null || book == null ){
             return ResponseEntity.notFound().build();
         }
-        user.getBooks().remove(book);
+        // user.getBooks().remove(book);
         userRepo.save(user);
         return ResponseEntity.ok(user);
     }
+
+    
 }

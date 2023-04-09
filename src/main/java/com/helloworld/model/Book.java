@@ -39,7 +39,7 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<User> users = new HashSet<>();
-
+    
     public Book orElse(Object object) {
         return null;
     }
@@ -70,5 +70,20 @@ public class Book {
     }
 
     public void setAvailable(boolean b) {
+    }
+
+    public int getNumberOfCopies() {
+        return 0;
+    }
+
+    public void setNumberOfCopies(int i) {
+    }
+
+    public int getNumAvailableCopies() {
+        return 0;
+    }
+
+    public Book get() {
+        return null;
     }
 }

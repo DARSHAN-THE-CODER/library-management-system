@@ -30,12 +30,24 @@ public class User {
     @NonNull
     private String password;
 
-    @ManyToMany
-    @JoinTable(name = "borrowings",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private Set<Book> books = new HashSet<>();
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // private Set<Borrowings> borrowings = new HashSet<>();
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "borrowings",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
+    private Set<Book> borrowings = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_book",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books = new HashSet<>();
+    
     public Object getName() {
         return null;
     }
@@ -51,6 +63,14 @@ public class User {
     }
 
     public User orElse(Object object) {
+        return null;
+    }
+
+    public User get() {
+        return null;
+    }
+
+    public List<Book> getBooks() {
         return null;
     }
 }

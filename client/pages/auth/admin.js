@@ -27,11 +27,11 @@ function Admin({ loggedIn, setIsloggedIn, setRoutes }) {
         },
         {
             name: "All Students",
-            path: "/data/student",
+            path: "/data/students",
         },
         {
             name: "All Librarians",
-            path: "/data/librarian",
+            path: "/data/librarians",
         },
     ]
 
