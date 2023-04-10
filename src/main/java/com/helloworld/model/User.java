@@ -15,7 +15,7 @@ import java.util.*;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NonNull
@@ -33,9 +33,9 @@ public class User {
     // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // private Set<Borrowings> borrowings = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
-            name = "borrowings",
+            name = "book_borrowings",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private Set<Book> borrowings = new HashSet<>();
@@ -72,5 +72,8 @@ public class User {
 
     public List<Book> getBooks() {
         return null;
+    }
+
+    public void setBooks(Book book) {
     }
 }

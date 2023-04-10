@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Set;
 import java.math.BigDecimal;
 
 @Data
@@ -27,7 +29,12 @@ public class Borrowings {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NonNull
+    // @NonNull
+    // @ManyToMany
+    // @JoinColumn(name = "user_id")
+    // private Set<User> user;
+
+    // @NonNull
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
@@ -58,6 +65,12 @@ public class Borrowings {
     public void setUserId(Long id2) {
     }
 
-    public void setBookId(Long id2) {
+	public void setUser(Optional<User> user2) {
+	}
+
+    public void setBookId(Long bookId) {
     }
+
+	public void setBook(Optional<Book> book2) {
+	}
 }

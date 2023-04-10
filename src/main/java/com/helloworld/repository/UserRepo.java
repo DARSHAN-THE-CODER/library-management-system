@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.helloworld.model.User;
 import java.util.*;
 
-public interface UserRepo extends JpaRepository<User,Integer>{
+public interface UserRepo extends JpaRepository<User,Long>{
 
     User findByEmail(String email);
 
-    User findById(Long userId);
+    // User findById(Long userId);
 
     // List<User> findByBooksContaining(Book book);
 

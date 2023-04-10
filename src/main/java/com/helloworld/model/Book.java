@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 public class Book {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NonNull
@@ -40,6 +40,13 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private Set<User> users = new HashSet<>();
     
+    @ManyToMany
+    @JoinTable(
+        name = "borrowings",
+        joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<Book> borrowings = new HashSet<>();
+
     public Book orElse(Object object) {
         return null;
     }

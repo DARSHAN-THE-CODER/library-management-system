@@ -14,9 +14,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        id:
+          new_generator_mappings: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
       database: postgresql
 
+# spring.jpa.properties.hibernate.id.new_generator_mappings=false
 #spring:
 #  main:
 #    web-application-type: none

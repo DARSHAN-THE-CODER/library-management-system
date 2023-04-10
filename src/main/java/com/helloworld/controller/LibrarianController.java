@@ -30,6 +30,8 @@ import com.helloworld.repository.BorrowingsRepo;
 import com.helloworld.repository.LibrarianRepo;
 import com.helloworld.repository.UserRepo;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping(path = "/api/v1/librarian")
 public class LibrarianController {
@@ -85,71 +87,141 @@ public class LibrarianController {
     public ResponseEntity<?> issueBook(@PathVariable Long librarianId, @PathVariable Long bookId,
             @PathVariable Long userId) {
 
+        Optional<Borrowings> borrowing = borrowingsRepo.findFirstByUser_IdAndBook_Id(bookId, userId);
+
+        System.out.println(borrowing);
+        
+        if( borrowing.isPresent() ) {
+            return ResponseEntity.badRequest().body("Student already owns this book");
+        }
         Optional<Librarian> librarian = librarianRepo.findById(librarianId);
-        Book book = bookRepo.findById(bookId);
-        User user = userRepo.findById(userId);
+        Book book = bookRepo.getById(userId);
+        User user = userRepo.getById(userId);
         System.out.println(bookRepo.findAll());
-        System.out.println(book);
+        // System.out.println(book.getId());
         System.out.println(user);
 
         if (book == null || user == null) {
             return ResponseEntity.notFound().build();
+        } else {
+
+            // if()
+
+            if (book.getAvailableCopies() == 0) {
+                return ResponseEntity.badRequest().body("Book cannot be issued");
+            }
+
+            System.out.println(book.getAvailableCopies());
+
+            // // after saving, suubtract it from available copies
+            book.setAvailableCopies(book.getAvailableCopies() - 1);
+
+            // // create new Borrowings object and save it to the database
+            Borrowings borrowings = new Borrowings();
+            borrowings.setBook(book);
+            borrowings.setUser(user);
+            // borrowings.setIssuedBy(librarian.get());
+
+            borrowings.setBorrowDate(LocalDateTime.now());
+            borrowings.setIssuedAt(LocalDateTime.now());
+            LocalDateTime dueDate = LocalDateTime.now().plusDays(7);
+            borrowings.setDueDate(dueDate);
+            borrowings.setUserId(userId);
+            borrowings.setBookId(bookId);
+
+            // System.out.println(bookId);
+
+            // System.out.println(borrowings);
+
+            // borrowings.setBookId(book.getId());
+
+            System.out.println(borrowings);
+
+            borrowingsRepo.save(borrowings);
+
+            bookRepo.save(book);
+            user.getBorrowings();
+
+            // user.setBooks(book);
+            // userRepo.save(user);
+            // User actualUser = user.get();
+            // actualUser.getBooks().add(book);
+            // user.getBooks().add(book);
+            // userRepo.save(user);
+
+            return ResponseEntity.ok("Book issued successfully");
         }
 
-        if (book.getAvailableCopies() == 0) {
-            return ResponseEntity.badRequest().body("Book cannot be issued");
-        }
-
-        // after saving, suubtract it from available copies
-        book.setAvailableCopies(book.getAvailableCopies() - 1);
-
-        // create new Borrowings object and save it to the database
-        Borrowings borrowings = new Borrowings();
-        borrowings.setBook(book);
-        borrowings.setUser(user);
-        borrowings.setBorrowDate(LocalDateTime.now());
-        borrowings.setIssuedBy(librarian.get());
-        borrowings.setIssuedAt(LocalDateTime.now());
-        borrowings.setUserId(user.getId());
-        borrowings.setBookId(book.getId());
-
-
-        System.out.println(borrowings);
-
-        borrowingsRepo.save(borrowings);
-        
-        bookRepo.save(book);
-        // User actualUser = user.get();
-        user.getBooks().add(book);
-        userRepo.save(user);
-
-        return ResponseEntity.ok("Book issued successfully");
     }
 
     // while returning book
-    // @PostMapping("/{librarianId}/return/{bookId}/{userId}")
-    // public ResponseEntity<String> returnBook(@PathVariable Long librarianId, @PathVariable Long bookId,
-    //         @PathVariable Long userId) {
-    //     Librarian librarian = librarianRepo.findById(librarianId).orElse(null);
-    //     Book book = bookRepo.findById(bookId).orElse(null);
-    //     User user = userRepo.findById(userId).orElse(null);
-    //     if (librarian == null || book == null || user == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-    //     if (book.isAvailable()) {
-    //         return ResponseEntity.badRequest().body("Book is already available");
-    //     }
-    //     book.setAvailable(true);
-    //     bookRepo.save(book);
-    //     user.getBooks().remove(book);
-    //     userRepo.save(user);
-    //     // Calculate fine if book is returned late
-    //     LocalDate dueDate = LocalDate.now().plusDays(14);
-    //     if (LocalDate.now().isAfter(dueDate)) {
-    //         long daysLate = ChronoUnit.DAYS.between(dueDate, LocalDate.now());
-    //         double fine = daysLate * 2.0;
-    //         return ResponseEntity.ok(String.format("Book returned successfully. Late return fine: $%.2f", fine));
-    //     }
-    //     return ResponseEntity.ok("Book returned successfully");
-    // }
+    @Transactional
+    @PostMapping("/{librarianId}/return/{bookId}/{userId}")
+    public ResponseEntity<String> returnBook(@PathVariable Long librarianId, @PathVariable Long bookId,
+            @PathVariable Long userId) {
+        // Librarian librarian = librarianRepo.findById(librarianId).orElse(null);
+        Book book = bookRepo.getById(userId);
+        User user = userRepo.getById(userId);
+        
+
+
+        // System.out.println(borrowingsRepo.findByBook(book));
+        // if ( book == null || user == null) {
+        // return ResponseEntity.notFound().build();
+        // }
+        // if (book.isAvailable()) {
+        // return ResponseEntity.badRequest().body("Book is already available");
+        // }
+        // book.setAvailable(true);
+        // bookRepo.save(book);
+        // user.getBooks().remove(book);
+        // userRepo.save(user);
+        // // Calculate fine if book is returned late
+        // LocalDate dueDate = LocalDate.now().plusDays(14);
+        // if (LocalDate.now().isAfter(dueDate)) {
+        // long daysLate = ChronoUnit.DAYS.between(dueDate, LocalDate.now());
+        // double fine = daysLate * 2.0;
+        // return ResponseEntity.ok(String.format("Book returned successfully. Late
+        // return fine: $%.2f", fine));
+        // }
+        // Borrowings b = borrowingsRepo.findByBookIdAndUserId(bookId, userId);
+        // Borrowings b = borrowingsRepo.findByBookIdAndUserId(bookId, userId);
+        // borrowingsRepo.deleteByUserAndBook(user, book);
+
+        // Optional<Borrowings> b = borrowingsRepo.findByBookAndUser(bookId, userId);
+        // System.out.println(b);
+        // borrowingsRepo.delete(b);
+        Optional<Borrowings> borrowing = borrowingsRepo.findFirstByUser_IdAndBook_Id(bookId, userId);
+        System.out.println(borrowing);
+        if( borrowing.isPresent() ) {
+            borrowingsRepo.deleteByUser_IdAndBook_Id(userId, bookId);
+            book.setAvailableCopies(book.getAvailableCopies() + 1);
+            bookRepo.save(book);
+            // borrowingsRepo.save();
+            return ResponseEntity.ok().body("Book returned successfully");
+        }
+        return ResponseEntity.badRequest().body("User doesnt own this book !");
+    }
+
+    @GetMapping("/borrowings/all")
+    public ResponseEntity<List<Borrowings>> getAllBorrowings() {
+        List<Borrowings> borrowings = borrowingsRepo.findAll();
+        return ResponseEntity.ok(borrowings);
+    }
+
+    @GetMapping("/borrowings/student/{userId}")
+    public ResponseEntity<?> userOwnedBooks(@PathVariable Long userId){
+        User user = userRepo.getById(userId);
+
+        Optional<Borrowings> borrowings = borrowingsRepo.findByUser_Id(userId);
+
+        return ResponseEntity.ok(borrowings);
+    }
+
+    @GetMapping("/borrowings/book/{bookId}")
+    public ResponseEntity<?> borrowingsBasedOnBook(@PathVariable Long bookId ){
+        Optional<Borrowings> borrowings = borrowingsRepo.findByBook_Id(bookId);
+
+        return ResponseEntity.ok(borrowings);
+    }
 }

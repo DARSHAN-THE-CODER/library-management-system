@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Table = ({ headers, data, rowsPerPageOptions = [10, 20, 30] }) => {
+const Table = ({ headers, data, rowsPerPageOptions = [5] }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
