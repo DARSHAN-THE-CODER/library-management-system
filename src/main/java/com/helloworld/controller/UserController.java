@@ -99,20 +99,20 @@ public class UserController {
 
     // when user borrows book..
 
-    @PostMapping("/{userId}/borrow/{bookId}")
-    public ResponseEntity<User> borrowBook(@PathVariable Long userId, @PathVariable Long bookId){
-        User user = userRepo.findById(userId).orElse(null);
-        // Book book = bookRepo.findById(bookId);
-        Book book = bookRepo.findById(bookId).orElse(null);
-        if(  user == null || book == null ){
-            return ResponseEntity.notFound().build();
-        }
+    // @PostMapping("/{userId}/borrow/{bookId}")
+    // public ResponseEntity<User> borrowBook(@PathVariable Long userId, @PathVariable Long bookId){
+    //     User user = userRepo.findById(userId).orElse(null);
+    //     // Book book = bookRepo.findById(bookId);
+    //     Book book = bookRepo.findById(bookId).orElse(null);
+    //     if(  user == null || book == null ){
+    //         return ResponseEntity.notFound().build();
+    //     }
 
-        Borrowings borrowing = new Borrowings(user, book);
-        borrowingsRepo.save(borrowing);
+    //     Borrowings borrowing = new Borrowings(user, book);
+    //     borrowingsRepo.save(borrowing);
     
-        return ResponseEntity.ok(user);
-    }
+    //     return ResponseEntity.ok(user);
+    // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id){
@@ -129,17 +129,25 @@ public class UserController {
 
     // while returnnig book
     @DeleteMapping("/{userId}/borrow/{bookId}")
-    public ResponseEntity<User> returnBook(@PathVariable Long userId, @PathVariable Long bookId){
-        User user = userRepo.findById(userId).orElse(null);
-        // Book book = bookRepo.findById(bookId);
-        Book book = bookRepo.findById(bookId).orElse(null);
-        if(  user == null || book == null ){
-            return ResponseEntity.notFound().build();
-        }
-        // user.getBooks().remove(book);
-        userRepo.save(user);
-        return ResponseEntity.ok(user);
-    }
+    // public ResponseEntity<User> returnBook(@PathVariable Long userId, @PathVariable Long bookId){
+    //     User user = userRepo.findById(userId).orElse(null);
+    //     // Book book = bookRepo.findById(bookId);
+    //     Book book = bookRepo.findById(bookId).orElse(null);
+    //     if(  user == null || book == null ){
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     // user.getBooks().remove(book);
+    //     userRepo.save(user);
+    //     return ResponseEntity.ok(user);
+    // }
 
+    @GetMapping("/borrowings/{userId}")
+    public ResponseEntity<?> userOwnedBooks(@PathVariable Long userId){
+        User user = userRepo.getById(userId);
+
+        Optional<Borrowings> borrowings = borrowingsRepo.findByUser_Id(userId);
+
+        return ResponseEntity.ok(borrowings);
+    }
     
 }

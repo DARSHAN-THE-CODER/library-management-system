@@ -29,6 +29,10 @@ function Librarian({setRoutes, setIsloggedIn}) {
             name: "All Students",
             path: "/data/student",
         },
+        {
+            name: "Return Book",
+            path: "/dashboard/returning"
+        }
     ]
 
     function handleSubmit(e) {

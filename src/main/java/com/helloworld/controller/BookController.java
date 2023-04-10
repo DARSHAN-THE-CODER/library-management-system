@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
 
 import com.helloworld.model.Book;
 import com.helloworld.model.User;
 import com.helloworld.repository.BookRepo;
 import com.helloworld.repository.UserRepo;
+import com.helloworld.repository.LibrarianRepo;
+import com.helloworld.repository.BorrowingsRepo;
+import com.helloworld.model.Borrowings;
 
 @RestController
 @RequestMapping(path = "/api/v1/book")
@@ -29,6 +33,9 @@ public class BookController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private BorrowingsRepo borrowingsRepo;
 
     @GetMapping("/")
     public ResponseEntity<List<Book>> getALlBooks(){
@@ -86,4 +93,11 @@ public class BookController {
     //     List<User> borrowers = userRepo.findByBooksContaining(book);
     //     return ResponseEntity.ok(borrowers);
     // }
+
+    @GetMapping("/borrowings/book/{bookId}")
+    public ResponseEntity<?> borrowingsBasedOnBook(@PathVariable Long bookId ){
+        Optional<Borrowings> borrowings = borrowingsRepo.findByBook_Id(bookId);
+
+        return ResponseEntity.ok(borrowings);
+    }
 }

@@ -209,19 +209,6 @@ public class LibrarianController {
         return ResponseEntity.ok(borrowings);
     }
 
-    @GetMapping("/borrowings/student/{userId}")
-    public ResponseEntity<?> userOwnedBooks(@PathVariable Long userId){
-        User user = userRepo.getById(userId);
 
-        Optional<Borrowings> borrowings = borrowingsRepo.findByUser_Id(userId);
 
-        return ResponseEntity.ok(borrowings);
-    }
-
-    @GetMapping("/borrowings/book/{bookId}")
-    public ResponseEntity<?> borrowingsBasedOnBook(@PathVariable Long bookId ){
-        Optional<Borrowings> borrowings = borrowingsRepo.findByBook_Id(bookId);
-
-        return ResponseEntity.ok(borrowings);
-    }
 }

@@ -10,9 +10,9 @@ import Table from '@/components/common/Table';
 
 // import axios from 'axios'
 // import { APIURL } from '@/constants/api'
+import IssueBook from '@/components/forms/IssueBook'
 
-
-function Dashboard() {
+function Dashboard({ loggedIn, setIsLoggedIn }) {
 
   const router = useRouter()
 
@@ -66,8 +66,17 @@ function Dashboard() {
     availableCopies: "Available Copies"
   }]
 
+  const [issueData, setIssueData] = useState({
+    userId: null,
+    bookId: null
+  })
+
+  const issueBook = (e) => {
+    e.preventDefault()
+  }
+
   return (
-    <div className='h-screen'>
+    <div className='h-screen overflow-auto'>
       <div className='text-2xl m-4'>Students</div>
       <Table headers={headers}
         data={studentData}
@@ -76,6 +85,9 @@ function Dashboard() {
       <Table headers={bookheaders}
         data={booksData}
       />
+      <div className='m-4'>
+        <IssueBook data={issueData} setData={setIssueData} handleSubmit={issueBook} />
+      </div>
     </div>
   )
 }
