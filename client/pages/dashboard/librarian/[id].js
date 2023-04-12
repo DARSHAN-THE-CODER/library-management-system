@@ -71,10 +71,46 @@ function Dashboard({ loggedIn, setIsLoggedIn }) {
     bookId: null
   })
 
+  const [returnData, setReturnData] = useState({
+    userId: null,
+    bookId: null
+  })
+
   const issueBook = (e) => {
     e.preventDefault()
+    console.log(issueData)
+    let temp = localStorage.getItem("lmsuserid")
+    axios.post(`${APIURL}/librarian/${temp}/issue/${issueData?.bookId}/${issueData?.userId}`)
+      .then((res) => {
+        console.log(res)
+        toast.success("Book issued successfully")
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error(` ${err?.response?.data}`)
+      })
   }
 
+  const returnBook = (e) => {
+    e.preventDefault();
+    let temp = localStorage.getItem("lmsuserid")
+    if (!returnData?.bookId || !returnData?.userId) {
+      toast.error("Please enter book id and user id")
+      return
+    } else {
+      axios.post(`${APIURL}/librarian/${temp}/return/${returnData?.bookId}/${returnData?.userId}`)
+        .then((res) => {
+          console.log(res)
+          toast.success("Book returned successfully")
+        }
+        )
+        .catch((err) => {
+          console.log(err)
+          toast.error(` ${err?.response?.data}`)
+        }
+        )
+    }
+  }
   return (
     <div className='h-screen overflow-auto'>
       <div className='text-2xl m-4'>Students</div>
@@ -85,8 +121,9 @@ function Dashboard({ loggedIn, setIsLoggedIn }) {
       <Table headers={bookheaders}
         data={booksData}
       />
-      <div className='m-4'>
-        <IssueBook data={issueData} setData={setIssueData} handleSubmit={issueBook} />
+      <div className='m-4 flex flex-wrap justify-evenly'>
+        <IssueBook heading={"Issue Book to a student"} data={issueData} setData={setIssueData} handleSubmit={issueBook} />
+        <IssueBook heading={"Returning book"} data={returnBook} setData={setReturnData} handleSubmit={returnBook} />
       </div>
     </div>
   )

@@ -87,25 +87,36 @@ public class LibrarianController {
     public ResponseEntity<?> issueBook(@PathVariable Long librarianId, @PathVariable Long bookId,
             @PathVariable Long userId) {
 
-        Optional<Borrowings> borrowing = borrowingsRepo.findFirstByUser_IdAndBook_Id(bookId, userId);
+        Optional<Book> b = bookRepo.findById(bookId);
+        Optional<User> u = userRepo.findById(userId);
 
-        System.out.println(borrowing);
-        
-        if( borrowing.isPresent() ) {
-            return ResponseEntity.badRequest().body("Student already owns this book");
+        System.out.println(b);
+        System.out.println(u);
+
+        if (b.isEmpty() || u.isEmpty()) {
+            return ResponseEntity.badRequest().body("Book or user not found");
         }
-        Optional<Librarian> librarian = librarianRepo.findById(librarianId);
-        Book book = bookRepo.getById(userId);
-        User user = userRepo.getById(userId);
-        System.out.println(bookRepo.findAll());
-        // System.out.println(book.getId());
-        System.out.println(user);
 
-        if (book == null || user == null) {
-            return ResponseEntity.notFound().build();
+        Book book = bookRepo.getById(bookId);
+        User user = userRepo.getById(userId);
+
+        // if(book == null || user == null){
+        // return ResponseEntity.notFound().build();
+        // }
+
+        Optional<Borrowings> borrowing = borrowingsRepo.findByUser_IdAndBook_Id(userId, bookId);
+
+        System.out.println("borrowing");
+        System.out.println(borrowing);
+
+        if (!borrowing.isEmpty()) {
+            return ResponseEntity.badRequest().body("Student already owns this book");
         } else {
 
-            // if()
+            Optional<Librarian> librarian = librarianRepo.findById(librarianId);
+
+            // System.out.println(bookRepo.findAll());
+            // System.out.println(user);
 
             if (book.getAvailableCopies() == 0) {
                 return ResponseEntity.badRequest().body("Book cannot be issued");
@@ -129,25 +140,12 @@ public class LibrarianController {
             borrowings.setUserId(userId);
             borrowings.setBookId(bookId);
 
-            // System.out.println(bookId);
-
-            // System.out.println(borrowings);
-
-            // borrowings.setBookId(book.getId());
-
             System.out.println(borrowings);
 
             borrowingsRepo.save(borrowings);
 
             bookRepo.save(book);
             user.getBorrowings();
-
-            // user.setBooks(book);
-            // userRepo.save(user);
-            // User actualUser = user.get();
-            // actualUser.getBooks().add(book);
-            // user.getBooks().add(book);
-            // userRepo.save(user);
 
             return ResponseEntity.ok("Book issued successfully");
         }
@@ -162,8 +160,6 @@ public class LibrarianController {
         // Librarian librarian = librarianRepo.findById(librarianId).orElse(null);
         Book book = bookRepo.getById(userId);
         User user = userRepo.getById(userId);
-        
-
 
         // System.out.println(borrowingsRepo.findByBook(book));
         // if ( book == null || user == null) {
@@ -193,7 +189,7 @@ public class LibrarianController {
         // borrowingsRepo.delete(b);
         Optional<Borrowings> borrowing = borrowingsRepo.findFirstByUser_IdAndBook_Id(bookId, userId);
         System.out.println(borrowing);
-        if( borrowing.isPresent() ) {
+        if (borrowing.isPresent()) {
             borrowingsRepo.deleteByUser_IdAndBook_Id(userId, bookId);
             book.setAvailableCopies(book.getAvailableCopies() + 1);
             bookRepo.save(book);
@@ -208,7 +204,5 @@ public class LibrarianController {
         List<Borrowings> borrowings = borrowingsRepo.findAll();
         return ResponseEntity.ok(borrowings);
     }
-
-
 
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function IssueBook({ handleSubmit, data, setData }) {
+function IssueBook({ handleSubmit, data, setData, heading }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -11,7 +11,7 @@ function IssueBook({ handleSubmit, data, setData }) {
     return (
         <div className="flex flex-col items-center justify-center mt-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                Issue Book to a student
+                {heading}
             </h2>
             <form className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
 
@@ -24,11 +24,12 @@ function IssueBook({ handleSubmit, data, setData }) {
                     </label>
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="studentId"
+                        id="userId"
                         type="number"
-                        name="studentId"
+                        name="userId"
                         placeholder="Student Id"
                         value={data.userId}
+                        min={0}
                         onChange={handleChange}
                     />
                 </div>
@@ -46,6 +47,7 @@ function IssueBook({ handleSubmit, data, setData }) {
                         type="number"
                         name="bookId"
                         placeholder="Book Id"
+                        min={"0"}
                         value={data.bookId}
                         onChange={handleChange}
                     />

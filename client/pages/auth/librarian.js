@@ -27,7 +27,7 @@ function Librarian({setRoutes, setIsloggedIn}) {
         },
         {
             name: "All Students",
-            path: "/data/student",
+            path: "/data/students",
         },
         {
             name: "Return Book",

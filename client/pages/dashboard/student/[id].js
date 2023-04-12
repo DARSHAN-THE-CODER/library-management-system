@@ -1,3 +1,5 @@
+import { APIURL } from '@/constants/api';
+import axios from 'axios';
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
@@ -7,6 +9,13 @@ function Dashboard() {
     useEffect(() => {
         if(router.query['id']){
             console.log(router.query['id'])
+            axios.get(`${APIURL}/user/borrowings/${router.query['id']}`)
+            .then((res) => {
+              console.log(res.data)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
         }
     },[router])
   return (

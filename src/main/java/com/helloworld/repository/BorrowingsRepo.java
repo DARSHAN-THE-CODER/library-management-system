@@ -25,7 +25,9 @@ public interface BorrowingsRepo extends JpaRepository<Borrowings, Long> {
 
     Optional<Borrowings> findFirstByUser_IdAndBook_Id(Long userId, Long bookId);
 
-    Optional<Borrowings> findByUser_Id(Long userId);
+    Optional<Borrowings> findByUser_IdAndBook_Id(Long userId, Long bookId);
+
+    List<Borrowings> findByUser_Id(Long userId); 
 
     Optional<Borrowings> findByBook_Id(Long bookId);
 

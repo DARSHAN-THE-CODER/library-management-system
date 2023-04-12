@@ -70,6 +70,20 @@ public class UserController {
         return ResponseEntity.ok(existingUser);
     }
 
+    // Bororowings of specific user
+    @GetMapping("/borrowings/{userId}")
+    public ResponseEntity<List<Borrowings>> userOwnedBooks(@PathVariable Long userId){
+        // User user = userRepo.getById(userId);
+
+        List<Borrowings> borrowings = borrowingsRepo.findByUser_Id(userId);
+
+        // System.out.println(user);
+        System.out.println(borrowings);
+
+        return ResponseEntity.ok(borrowings);
+        // return ResponseEntity.ok().body(borrowings);
+    }
+
     // find user by email
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
@@ -128,7 +142,7 @@ public class UserController {
     }
 
     // while returnnig book
-    @DeleteMapping("/{userId}/borrow/{bookId}")
+    // @DeleteMapping("/{userId}/borrow/{bookId}")
     // public ResponseEntity<User> returnBook(@PathVariable Long userId, @PathVariable Long bookId){
     //     User user = userRepo.findById(userId).orElse(null);
     //     // Book book = bookRepo.findById(bookId);
@@ -141,13 +155,6 @@ public class UserController {
     //     return ResponseEntity.ok(user);
     // }
 
-    @GetMapping("/borrowings/{userId}")
-    public ResponseEntity<?> userOwnedBooks(@PathVariable Long userId){
-        User user = userRepo.getById(userId);
 
-        Optional<Borrowings> borrowings = borrowingsRepo.findByUser_Id(userId);
-
-        return ResponseEntity.ok(borrowings);
-    }
     
 }

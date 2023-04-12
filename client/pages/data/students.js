@@ -21,8 +21,9 @@ function Student() {
 
     useEffect(() => {
         console.log("Student page")
-        if (localStorage.getItem('lmsuser') !== "admin") {
-            toast.error("You are not authorized to view this page, Please login as admin")
+        console.log(localStorage.getItem('lmsuser'))
+        if ((localStorage.getItem('lmsuser') === "student") ) {
+            toast.error("You are not authorized to view this page, Please login as admin or librarian")
             router.push("/auth/admin")
         } else {
             axios.get(`${APIURL}/admin/users`)
