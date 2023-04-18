@@ -33,6 +33,10 @@ function Admin({ loggedIn, setIsloggedIn, setRoutes }) {
             name: "All Librarians",
             path: "/data/librarians",
         },
+        {
+            name: "Edit Profile",
+            path: "/edit",
+        }
     ]
 
     function handleReset() {

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,8 +68,18 @@ public class LibrarianController {
         return ResponseEntity.ok(existingLibrarian);
     }
 
+    // get librarian details using id
+    @GetMapping("/id/{librarianId}")
+    public ResponseEntity<Librarian> getLibrarianById(@PathVariable Long librarianId) {
+        Librarian librarian = librarianRepo.findById(librarianId).orElse(null);
+        if (librarian == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(librarian);
+    }
+
     // to update librarian details
-    @PutMapping("/{librarianId}")
+    @PatchMapping("/id/{librarianId}")
     public ResponseEntity<Librarian> updateDetails(@PathVariable Long librarianId, @RequestBody Librarian librarian) {
         Librarian existingLibrarian = librarianRepo.findById(librarianId).orElse(null);
         if (existingLibrarian == null) {
@@ -76,7 +87,7 @@ public class LibrarianController {
         }
         existingLibrarian.setFirstName(librarian.getFirstName());
         existingLibrarian.setLastName(librarian.getLastName());
-        existingLibrarian.setEmail(librarian.getEmail());
+        // existingLibrarian.setEmail(librarian.getEmail());
         existingLibrarian.setPassword(librarian.getPassword());
         librarianRepo.save(existingLibrarian);
         return ResponseEntity.ok(existingLibrarian);

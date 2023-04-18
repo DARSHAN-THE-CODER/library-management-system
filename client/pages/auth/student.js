@@ -21,6 +21,17 @@ function student({setRoutes, setIsloggedIn}) {
     })
   }
 
+  const routes = [
+    {
+      name: 'Dashboard',
+      path: '/dashboard',
+    },
+    {
+      name: 'Edit Profile',
+      path: '/edit',
+    },
+  ]
+
   function handleSubmit(e) {
     e.preventDefault()
     console.log(user)
@@ -31,6 +42,7 @@ function student({setRoutes, setIsloggedIn}) {
         localStorage.setItem('lmsuser', 'student')
         localStorage.setItem('lmsuserid', res.data.id)
         setIsloggedIn(true)
+        setRoutes(routes)
         router.push(`/dashboard/student/${res.data.id}`)
       }
       )

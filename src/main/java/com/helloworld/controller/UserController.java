@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -94,10 +95,20 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // find user by id
+    @GetMapping("/id/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        User user = userRepo.findById(id).orElse(null);
+        if (user == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
     // update first name and lastname of user
-    @PutMapping("/{email}")
-    public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User updateUser){
-        User existingUser = userRepo.findByEmail(email).orElse(null);
+    @PatchMapping("/id/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updateUser){
+        User existingUser = userRepo.findById(id).orElse(null);
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
         }
@@ -106,6 +117,9 @@ public class UserController {
         }
         if (updateUser.getLastName() != null) {
             existingUser.setLastName(updateUser.getLastName());
+        }
+        if (updateUser.getPassword() != null) {
+            existingUser.setPassword(updateUser.getPassword());
         }
         userRepo.save(existingUser);
         return ResponseEntity.ok(existingUser);

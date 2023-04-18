@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -64,6 +65,33 @@ public class AdministratorController {
             }else{
                 return ResponseEntity.badRequest().body("Password is incorrect");
             }
+        }else{
+            return ResponseEntity.badRequest().body("Admin does not exist");
+        }
+    }
+
+    // to update admin details using id
+    @PatchMapping("/id/{id}")
+    public ResponseEntity<?> updateAdminById(@PathVariable("id") Long id, @RequestBody Administrator admin){
+        Administrator existingAdmin = adminRepo.findById(id).orElse(null);
+        if(existingAdmin != null){
+            existingAdmin.setFirstName(admin.getFirstName());
+            existingAdmin.setLastName(admin.getLastName());
+            // existingAdmin.setEmail(admin.getEmail());
+            existingAdmin.setPassword(admin.getPassword());
+            adminRepo.save(existingAdmin);
+            return ResponseEntity.ok(existingAdmin);
+        }else{
+            return ResponseEntity.badRequest().body("Admin does not exist");
+        }
+    }
+
+    // get admin details using id
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getAdminById(@PathVariable("id") Long id){
+        Administrator admin = adminRepo.findById(id).orElse(null);
+        if(admin != null){
+            return ResponseEntity.ok(admin);
         }else{
             return ResponseEntity.badRequest().body("Admin does not exist");
         }
