@@ -36,11 +36,5 @@ jobs:
 
     - name: build and deploy frontend
       run: |
-            cd ~/actions-runner/_work/library-management-system/library-management-system/client
-            curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-            npm install yarn -g
             yarn 
             yarn dev
