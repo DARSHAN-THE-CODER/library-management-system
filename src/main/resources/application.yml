@@ -3,11 +3,13 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/sptest
+    # url: jdbc:postgresql://localhost:5433/sptest
+    url: jdbc:postgresql://ccproject.ct0nmr7fxogl.ap-south-1.rds.amazonaws.com
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
+    # generate-ddl: true
     hibernate:
       ddl-auto: update
     show-sql: true
