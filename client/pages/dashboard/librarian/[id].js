@@ -111,11 +111,29 @@ function Dashboard({ loggedIn, setIsLoggedIn }) {
         )
     }
   }
+
+  const handleDeleteStudent = (row) => {
+    console.log(row)
+    if(confirm("Are you sure you want to delete this student?")){
+      axios.delete(`${APIURL}/user/${row.id}`)
+      .then((res) => {
+        console.log(res)
+        toast.success("Student deleted successfully")
+        setStudentData(studentData.filter((item) => item.id !== row.id))
+      })
+      .catch((err) => {
+        console.log(err)
+        toast.error("Failed to delete student")
+      })
+    }
+  }
+
   return (
     <div className='h-screen overflow-auto'>
       <div className='text-2xl m-4'>Students</div>
       <Table headers={headers}
         data={studentData}
+        handleRowDelete={handleDeleteStudent}
       />
       <div className='text-2xl m-4'>Books</div>
       <Table headers={bookheaders}

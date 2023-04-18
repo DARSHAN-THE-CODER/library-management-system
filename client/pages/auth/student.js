@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 import { useRouter } from 'next/router'
 
-function student() {
+function student({setRoutes, setIsloggedIn}) {
   const router = useRouter()
   const [user, setUser] = useState({
     email: '',
@@ -30,6 +30,7 @@ function student() {
         toast.success('Login Successful')
         localStorage.setItem('lmsuser', 'student')
         localStorage.setItem('lmsuserid', res.data.id)
+        setIsloggedIn(true)
         router.push(`/dashboard/student/${res.data.id}`)
       }
       )

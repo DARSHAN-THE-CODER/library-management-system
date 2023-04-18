@@ -29,10 +29,10 @@ function Librarian({setRoutes, setIsloggedIn}) {
             name: "All Students",
             path: "/data/students",
         },
-        {
-            name: "Return Book",
-            path: "/dashboard/returning"
-        }
+        // {
+        //     name: "Return Book",
+        //     path: "/dashboard/returning"
+        // }
     ]
 
     function handleSubmit(e) {

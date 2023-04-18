@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Table = ({ headers, data, rowsPerPageOptions = [5] }) => {
+const Table = ({ headers, data, rowsPerPageOptions = [5], handleRowDelete = () => {} }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
@@ -46,9 +46,9 @@ const Table = ({ headers, data, rowsPerPageOptions = [5] }) => {
 
     const currentData = data.slice(firstIndex, lastIndex);
 
-    const handleRowDelete = (row) => {
-        console.log(row)
-    }
+    // const handleRowDelete = (row) => {
+    //     console.log(row)
+    // }
     return (
         <div className='p-4 m-4 border border-solid max-w-[100vw] overflow-x-auto'>
             {/* Table */}
