@@ -69,8 +69,7 @@ function Edit() {
 
     },[])
   return (
-    <div className='h-screen'>Edit
-
+    <div className='h-screen'>
         <Form fields={data} type={things.type} id={things.id}/>
     </div>
   )
