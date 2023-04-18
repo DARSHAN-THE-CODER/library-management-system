@@ -31,8 +31,6 @@ jobs:
       run: |
             cd ~/actions-runner/_work/library-management-system/library-management-system
             mvn clean install -DskipTests
-            pm2 delete backend
-            pm2 delete frontend
 
     - name: build and deploy frontend
       run: |
