@@ -24,7 +24,7 @@ export default function Home({loggedIn, setIsloggedIn}) {
         <h1 className="text-6xl font-bold text-gray-800 text-center mt-auto">
           Welcome to the <span className="text-blue-500" style={{ "animation": "typing 1s steps(10, end) 1s 1 normal both, blink-caret .75s step-end infinite" }}>Library Management System</span>
         </h1>
-        <h1> Darshan V</h1>
+       
         <div className="flex flex-col md:flex-row flex-wrap h-full justify-center items-center justify-items-center">
           <div className="bg-white p-4 rounded-lg shadow m-4 ">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Search for Books</h2>
